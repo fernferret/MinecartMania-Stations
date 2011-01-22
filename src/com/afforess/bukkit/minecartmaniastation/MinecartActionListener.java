@@ -110,7 +110,6 @@ public class MinecartActionListener extends MinecartManiaListener{
 				}
 				minecartBehind.minecart.setVelocity(velocity);
 				minecartBehind.setDataValue("queued velocity", null);
-				System.out.println("Restared queue");
 				
 				minecartBehind = minecartBehind.getMinecartBehind();
 			}

@@ -48,9 +48,7 @@ public class SignCommands {
 					}
 					if (!valid && minecart.hasPlayerPassenger() && minecart.getPlayerPassenger().getItemInHand() != null) {
 						Material itemInHand = minecart.getPlayerPassenger().getItemInHand().getType();
-						System.out.println("Item in Hand " + itemInHand);
 						Material signData = ItemUtil.itemStringToMaterial(val[0].trim());
-						System.out.println("Sign Text: " + val[0].trim() + " Sign Data: " + signData);
 						valid = signData != null && signData.getId() == itemInHand.getId();
 						if (valid) {
 							if (val[0].trim().indexOf("[") > -1) {
@@ -77,22 +75,18 @@ public class SignCommands {
 				//Note getDirectionOfMotion is unreliable on curves, use getPreviousFacingDir instead.
 				if (!valid && (val[0].indexOf("W") > -1 || val[0].toLowerCase().indexOf("west") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.WEST;
-					System.out.println("Incoming West");
 					newLine = "[West :";
 				}
 				else if (!valid && (val[0].indexOf("E") > -1 || val[0].toLowerCase().indexOf("east") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.EAST;
-					System.out.println("Incoming East");
 					newLine = "[East :";
 				}
 				else if (!valid && (val[0].indexOf("N") > -1 || val[0].toLowerCase().indexOf("north") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.NORTH;
-					System.out.println("Incoming North");
 					newLine = "[North :";
 				}
 				else if (!valid && (val[0].indexOf("S") > -1 || val[0].toLowerCase().indexOf("south") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.SOUTH;
-					System.out.println("Incoming South");
 					newLine = "[South :";
 				}
 				
@@ -100,30 +94,23 @@ public class SignCommands {
 					DirectionUtils.CompassDirection direction = DirectionUtils.CompassDirection.NO_DIRECTION;
 					if (val[1].indexOf("W") > -1 || val[1].toLowerCase().indexOf("west") > -1) {
 						direction = DirectionUtils.CompassDirection.WEST;
-						System.out.println("Outgoing West");
 						newLine += " West]";
 					}
 					else if (val[1].indexOf("E") > -1 || val[1].toLowerCase().indexOf("east") > -1) {
 						direction = DirectionUtils.CompassDirection.EAST;
-						System.out.println("Outgoing East");
 						newLine += " East]";
 					}
 					else if (val[1].indexOf("S") > -1 || val[1].toLowerCase().indexOf("south") > -1) {
 						direction = DirectionUtils.CompassDirection.SOUTH;
-						System.out.println("Outgoing South");
 						newLine += " South]";
 					}
 					else if (val[1].indexOf("N") > -1 || val[1].toLowerCase().indexOf("north") > -1) {
 						direction = DirectionUtils.CompassDirection.NORTH;
-						System.out.println("Outgoing North");
 						newLine += " North]";
 					}
 					if (MinecartUtils.validMinecartTrack(minecart.getX(), minecart.getY(), minecart.getZ(), 2, direction)) {
 						int data = DirectionUtils.getMinetrackRailDataForDirection(direction, minecart.getPreviousFacingDir());
-						System.out.println("Data is " + data);
 						if (data != -1) {
-							
-							System.out.println("Done! " + newLine + " " + str);
 							if (!newLine.equals(str)) {
 								sign.setLine(k, newLine);
 								sign.update(true);
@@ -142,16 +129,12 @@ public class SignCommands {
 							return;
 						}
 						else {
-							System.out.println(direction + " " + minecart.getPreviousFacingDir());
 							if (DirectionUtils.getOppositeDirection(direction).equals(minecart.getPreviousFacingDir())) {
-								System.out.println("Reversing");
 								if (!newLine.equals(str)) {
 									sign.setLine(k, newLine);
 									sign.update(true);
 								}
-								System.out.println(minecart.getMotionX() + " " + minecart.getMotionZ());
 								minecart.reverse();
-								System.out.println(minecart.getMotionX() + " " + minecart.getMotionZ());
 								event.setActionTaken(true);
 								return;
 							}

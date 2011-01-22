@@ -11,7 +11,6 @@ public class ItemUtil {
 		}
 		if (str.indexOf('[') > -1) {
 			str = str.substring(str.indexOf('[') + 1);
-			System.out.println("String " + str);
 		}
 		str = str.toLowerCase();
 		Material e;
@@ -21,7 +20,6 @@ public class ItemUtil {
 			e = Material.getMaterial(i);
 			if (e != null) {
 				String item = e.toString().toLowerCase();
-				System.out.println("String " + str + "Item " + item);
 				if (item.indexOf(str) > -1) {
 					
 					return e;
