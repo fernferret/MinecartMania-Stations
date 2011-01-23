@@ -41,7 +41,7 @@ public class SignCommands {
 						valid = minecart.minecart.getPassenger() == null;
 					}
 					if (!valid && minecart.hasPlayerPassenger()) {
-						valid = str.toLowerCase().indexOf(minecart.getPlayerPassenger().getName()) > -1;
+						valid = str.toLowerCase().indexOf(minecart.getPlayerPassenger().getName().toLowerCase()) > -1;
 						if (valid) {
 							newLine = "[" + minecart.getPlayerPassenger().getName() + " :";
 						}
@@ -92,7 +92,13 @@ public class SignCommands {
 				
 				if (valid) {
 					DirectionUtils.CompassDirection direction = DirectionUtils.CompassDirection.NO_DIRECTION;
-					if (val[1].indexOf("W") > -1 || val[1].toLowerCase().indexOf("west") > -1) {
+					
+					//Process STR first because of overlapping characters
+					if (val[1].indexOf("STR") > -1 || val[1].toLowerCase().indexOf("straight") > -1) {
+						direction = minecart.getPreviousFacingDir();
+						newLine += " STR]";
+					}
+					else if (val[1].indexOf("W") > -1 || val[1].toLowerCase().indexOf("west") > -1) {
 						direction = DirectionUtils.CompassDirection.WEST;
 						newLine += " West]";
 					}
@@ -107,6 +113,14 @@ public class SignCommands {
 					else if (val[1].indexOf("N") > -1 || val[1].toLowerCase().indexOf("north") > -1) {
 						direction = DirectionUtils.CompassDirection.NORTH;
 						newLine += " North]";
+					}
+					else if (val[1].indexOf("L") > -1 || val[1].toLowerCase().indexOf("left") > -1) {
+						direction = DirectionUtils.getLeftDirection(minecart.getPreviousFacingDir());
+						newLine += " Left]";
+					}
+					else if (val[1].indexOf("R") > -1 || val[1].toLowerCase().indexOf("right") > -1) {
+						direction = DirectionUtils.getRightDirection(minecart.getPreviousFacingDir());
+						newLine += " Right]";
 					}
 					if (MinecartUtils.validMinecartTrack(minecart.getX(), minecart.getY(), minecart.getZ(), 2, direction)) {
 						int data = DirectionUtils.getMinetrackRailDataForDirection(direction, minecart.getPreviousFacingDir());
