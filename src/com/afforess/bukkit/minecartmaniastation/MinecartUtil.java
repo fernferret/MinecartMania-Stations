@@ -12,8 +12,8 @@ public class MinecartUtil {
 		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("station block"));
 	}
 	
-	public static boolean isAvoidCollisions() {
-		Object o = MinecartManiaWorld.getConfigurationValue("Minecarts Avoid Collisions");
+	public static boolean isAutoIntersectionPrompt() {
+		Object o = MinecartManiaWorld.getConfigurationValue("Auto Intersection Prompts");
 		if (o != null) {
 			Boolean value = (Boolean)o;
 			return value.booleanValue();
@@ -42,5 +42,14 @@ public class MinecartUtil {
 		}
 		
 		return null;
+	}
+
+	public static boolean isStationIntersectionPrompt() {
+		Object o = MinecartManiaWorld.getConfigurationValue("Intersection Prompts Only at Station Blocks");
+		if (o != null) {
+			Boolean value = (Boolean)o;
+			return value.booleanValue();
+		}
+		return false;
 	}
 }

@@ -63,7 +63,8 @@ public class MinecartActionListener extends MinecartManiaListener{
 			SignCommands.processStation(event);
 		}
 		
-		if (!event.isActionTaken() && minecart.hasPlayerPassenger()) {
+		if (!event.isActionTaken() && minecart.hasPlayerPassenger() && (MinecartUtil.isAutoIntersectionPrompt()
+				|| (minecart.getBlockIdBeneath() == MinecartUtil.getStationBlockID() && MinecartUtil.isStationIntersectionPrompt()))) {
 			
 			minecart.setDataValue("preintersection velocity", minecart.minecart.getVelocity().clone());
 			minecart.stopCart();

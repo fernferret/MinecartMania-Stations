@@ -159,5 +159,36 @@ public class SignCommands {
 			}
 		}
 	}
+	
+	
+	public static boolean doStopAtDestination(MinecartManiaMinecart minecart) {
+		//Set by MMAC
+		if (minecart.getDataValue("stop at station") == null) {
+			return false;
+		}
+		
+		//TODO this just seems too messy
+		/*boolean stop = false;
+		ArrayList<Sign> signList = SignUtils.getAdjacentSignList(minecart, 2);
+		for (Sign sign : signList) {
+			for (int k = 0; k < 4; k++) {
+				String str = sign.getLine(k);
+				boolean convert = false;
+				
+				//CraftBook Conversion
+				if (str.toLowerCase().contains("sort")) {
+					convert = true;
+				}
+				if (!StringUtils.getNumber(str).isEmpty()) {
+					int value = Integer.valueOf(StringUtils.getNumber(str));
+					if (value == ((Integer)minecart.getDataValue("stop at station")).intValue()) {
+						stop = true;
+					}
+				}
+			}
+		}*/
+		
+		return false;
+	}
 
 }

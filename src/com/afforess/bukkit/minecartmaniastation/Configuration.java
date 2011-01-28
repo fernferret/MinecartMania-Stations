@@ -40,7 +40,7 @@ public class Configuration {
 			BufferedReader bufferedreader = new BufferedReader(new FileReader(file));
 			for (String s = ""; (s = bufferedreader.readLine()) != null; )
 			{
-				if (s.indexOf(MinecartManiaCore.description.getVersion()) > -1)
+				if (s.indexOf(MinecartManiaStation.description.getVersion()) > -1)
 				{
 					return false;
 				}
@@ -64,8 +64,10 @@ public class Configuration {
 			MinecartManiaFlatFile.createNewHeader(bufferedwriter, "Minecraft Mania Stations" + MinecartManiaStation.description.getVersion(), "Minecart Mania Station Config Settings", true);
 			MinecartManiaFlatFile.createNewSetting(bufferedwriter, "Station Block", Material.BRICK.toString(), 
 			"Intersection Station Block.");
-			//MinecartManiaFlatFile.createNewSetting(bufferedwriter, "Minecarts Avoid Collisions", "true", 
-			//"Minecarts will avoid colliding with each other, and pass through one another.");
+			MinecartManiaFlatFile.createNewSetting(bufferedwriter, "Auto Intersection Prompts", "true", 
+			"When a player reaches an intersection, they will be prompted for the direction they wish to go.");
+			MinecartManiaFlatFile.createNewSetting(bufferedwriter, "Intersection Prompts Only at Station Blocks", "false", 
+			"When a player reaches an intersection, they will onyl be prompted for the direction they wish to go if there is a station block underneath the intersection.");
 
 
 			bufferedwriter.close();
@@ -83,8 +85,11 @@ public class Configuration {
 			MinecartManiaWorld.setConfigurationValue("station block", new Integer(
 					Material.valueOf(MinecartManiaFlatFile.getValueFromSetting(file, "Station Block", Material.BRICK.toString())).getId()));
 			
-			//MinecartManiaWorld.setConfigurationValue("Minecarts Avoid Collisions", new Boolean(
-			//		MinecartManiaFlatFile.getValueFromSetting(file, "Minecarts Avoid Collisions", true)));
+			MinecartManiaWorld.setConfigurationValue("Auto Intersection Prompts", new Boolean(
+					MinecartManiaFlatFile.getValueFromSetting(file, "Auto Intersection Prompts", true)));
+			
+			MinecartManiaWorld.setConfigurationValue("Intersection Prompts Only at Station Blocks", new Boolean(
+					MinecartManiaFlatFile.getValueFromSetting(file, "Intersection Prompts Only at Station Blocks", true)));
 
 		}
 		catch (Exception exception)
