@@ -25,6 +25,31 @@ public class MinecartUtil {
 		return minecart.getDataValue("queued velocity") != null;
 	}
 	
+	public static void updateQueue(MinecartManiaMinecart minecart) {
+		//Test all 4 compass directions
+		MinecartManiaMinecart minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.NORTH);
+		if (minecartBehind == null) {
+			minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.EAST);
+		}
+		if (minecartBehind == null) {
+			minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.SOUTH);
+		}
+		if (minecartBehind == null) {
+			minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.WEST);
+		}
+		//restart the waiting queue behind us
+		while (minecartBehind != null) {
+			Vector velocity = (Vector)minecartBehind.getDataValue("queued velocity");
+			if (velocity == null) {
+				break;
+			}
+			minecartBehind.minecart.setVelocity(velocity);
+			minecartBehind.setDataValue("queued velocity", null);
+			
+			minecartBehind = minecartBehind.getMinecartBehind();
+		}
+	}
+	
 	public static Vector alterMotionFromDirection(DirectionUtils.CompassDirection direction, Vector oldVelocity) {
 		double speed = Math.abs(oldVelocity.getX()) > Math.abs(oldVelocity.getZ()) ? Math.abs(oldVelocity.getX()) : Math.abs(oldVelocity.getZ());
 		

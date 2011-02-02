@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import com.afforess.bukkit.minecartmaniacore.ChatUtils;
 import com.afforess.bukkit.minecartmaniacore.DirectionUtils;
@@ -14,6 +13,7 @@ import com.afforess.bukkit.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.bukkit.minecartmaniacore.event.MinecartActionEvent;
 import com.afforess.bukkit.minecartmaniacore.event.MinecartIntersectionEvent;
 import com.afforess.bukkit.minecartmaniacore.event.MinecartManiaListener;
+import com.afforess.bukkit.minecartmaniacore.event.MinecartManiaMinecartDestroyedEvent;
 import com.afforess.bukkit.minecartmaniacore.event.MinecartMotionStartEvent;
 
 public class MinecartActionListener extends MinecartManiaListener{
@@ -89,32 +89,12 @@ public class MinecartActionListener extends MinecartManiaListener{
 	public void onMinecartMotionStartEvent(MinecartMotionStartEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
 		if (minecart.isAtIntersection()) {
-			
-			
-			
-			//Test all 4 compass directions
-			MinecartManiaMinecart minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.NORTH);
-			if (minecartBehind == null) {
-				minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.EAST);
-			}
-			if (minecartBehind == null) {
-				minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.SOUTH);
-			}
-			if (minecartBehind == null) {
-				minecartBehind = minecart.getAdjacentMinecartFromDirection(DirectionUtils.CompassDirection.WEST);
-			}
-			//restart the waiting queue behind us
-			while (minecartBehind != null) {
-				Vector velocity = (Vector)minecartBehind.getDataValue("queued velocity");
-				if (velocity == null) {
-					break;
-				}
-				minecartBehind.minecart.setVelocity(velocity);
-				minecartBehind.setDataValue("queued velocity", null);
-				
-				minecartBehind = minecartBehind.getMinecartBehind();
-			}
+			MinecartUtil.updateQueue(minecart);
 		}
-		
+	}
+	
+	public void onMinecartManiaMinecartDestroyedEvent(MinecartManiaMinecartDestroyedEvent event) {
+		MinecartManiaMinecart minecart = event.getMinecart();
+		MinecartUtil.updateQueue(minecart);
 	}
 }

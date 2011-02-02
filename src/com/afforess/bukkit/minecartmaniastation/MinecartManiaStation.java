@@ -5,13 +5,15 @@ import java.util.logging.Logger;
 
 import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.afforess.bukkit.minecartmaniacore.Configuration;
 
 
 public class MinecartManiaStation extends JavaPlugin{
@@ -44,7 +46,7 @@ public class MinecartManiaStation extends JavaPlugin{
 			this.setEnabled(false);
 		}
 		else {
-			Configuration.loadConfiguration();
+			Configuration.loadConfiguration(description, SettingList.config);
 	        getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, listener, Priority.High, this);
 	        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_DAMAGE, vehicleListener, Priority.High, this);
 	        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, vehicleListener, Priority.Low, this);
@@ -54,9 +56,9 @@ public class MinecartManiaStation extends JavaPlugin{
 		}
 	}
 	
-	public boolean onCommand(Player player, Command c, String s, String[] list) {
-		if (s.contains("reloadconfig")) {
-			Configuration.loadConfiguration();
+	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+		if (commandLabel.contains("reloadconfig")) {
+			Configuration.loadConfiguration(description, SettingList.config);
 		}
 		return true;
 	}
