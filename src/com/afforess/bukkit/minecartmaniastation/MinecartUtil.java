@@ -9,7 +9,7 @@ import com.afforess.bukkit.minecartmaniacore.MinecartManiaWorld;
 public class MinecartUtil {
 
 	public static int getStationBlockID() {
-		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("station block"));
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Station Block"));
 	}
 	
 	public static boolean isAutoIntersectionPrompt() {

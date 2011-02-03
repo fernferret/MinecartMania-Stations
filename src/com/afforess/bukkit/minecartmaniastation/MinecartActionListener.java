@@ -58,7 +58,7 @@ public class MinecartActionListener extends MinecartManiaListener{
 	
 	public void onMinecartIntersectionEvent(MinecartIntersectionEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
-		
+	
 		if (minecart.getBlockIdBeneath() == MinecartUtil.getStationBlockID()) {
 			SignCommands.processStation(event);
 		}
