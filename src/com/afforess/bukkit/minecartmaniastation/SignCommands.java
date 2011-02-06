@@ -26,6 +26,8 @@ public class SignCommands {
 				if (val.length != 2) {
 					continue;
 				}
+				val[0] = val[0].trim();
+				val[1] = val[1].trim();
 				boolean valid = false;
 				if (minecart.isStandardMinecart()) {
 					if (!valid && str.toLowerCase().indexOf("mobs") > -1) {
@@ -73,19 +75,19 @@ public class SignCommands {
 				}
 				
 				//Note getDirectionOfMotion is unreliable on curves, use getPreviousFacingDir instead.
-				if (!valid && (val[0].indexOf("W") > -1 || val[0].toLowerCase().indexOf("west") > -1)) {
+				if (!valid && (val[0].equals("W") || val[0].toLowerCase().indexOf("west") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.WEST;
 					newLine = "[West :";
 				}
-				else if (!valid && (val[0].indexOf("E") > -1 || val[0].toLowerCase().indexOf("east") > -1)) {
+				else if (!valid && (val[0].equals("E") || val[0].toLowerCase().indexOf("east") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.EAST;
 					newLine = "[East :";
 				}
-				else if (!valid && (val[0].indexOf("N") > -1 || val[0].toLowerCase().indexOf("north") > -1)) {
+				else if (!valid && (val[0].equals("N") || val[0].toLowerCase().indexOf("north") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.NORTH;
 					newLine = "[North :";
 				}
-				else if (!valid && (val[0].indexOf("S") > -1 || val[0].toLowerCase().indexOf("south") > -1)) {
+				else if (!valid && (val[0].equals("S") || val[0].toLowerCase().indexOf("south") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.SOUTH;
 					newLine = "[South :";
 				}
@@ -94,31 +96,31 @@ public class SignCommands {
 					DirectionUtils.CompassDirection direction = DirectionUtils.CompassDirection.NO_DIRECTION;
 					
 					//Process STR first because of overlapping characters
-					if (val[1].indexOf("STR") > -1 || val[1].toLowerCase().indexOf("straight") > -1) {
+					if (val[1].equals("STR") || val[1].toLowerCase().indexOf("straight") > -1) {
 						direction = minecart.getPreviousFacingDir();
 						newLine += " STR]";
 					}
-					else if (val[1].indexOf("W") > -1 || val[1].toLowerCase().indexOf("west") > -1) {
+					else if (val[1].equals("W") || val[1].toLowerCase().indexOf("west") > -1) {
 						direction = DirectionUtils.CompassDirection.WEST;
 						newLine += " West]";
 					}
-					else if (val[1].indexOf("E") > -1 || val[1].toLowerCase().indexOf("east") > -1) {
+					else if (val[1].equals("E") || val[1].toLowerCase().indexOf("east") > -1) {
 						direction = DirectionUtils.CompassDirection.EAST;
 						newLine += " East]";
 					}
-					else if (val[1].indexOf("S") > -1 || val[1].toLowerCase().indexOf("south") > -1) {
+					else if (val[1].equals("S") || val[1].toLowerCase().indexOf("south") > -1) {
 						direction = DirectionUtils.CompassDirection.SOUTH;
 						newLine += " South]";
 					}
-					else if (val[1].indexOf("N") > -1 || val[1].toLowerCase().indexOf("north") > -1) {
+					else if (val[1].equals("N") || val[1].toLowerCase().indexOf("north") > -1) {
 						direction = DirectionUtils.CompassDirection.NORTH;
 						newLine += " North]";
 					}
-					else if (val[1].indexOf("L") > -1 || val[1].toLowerCase().indexOf("left") > -1) {
+					else if (val[1].equals("L") || val[1].toLowerCase().indexOf("left") > -1) {
 						direction = DirectionUtils.getLeftDirection(minecart.getPreviousFacingDir());
 						newLine += " Left]";
 					}
-					else if (val[1].indexOf("R") > -1 || val[1].toLowerCase().indexOf("right") > -1) {
+					else if (val[1].equals("R") || val[1].toLowerCase().indexOf("right") > -1) {
 						direction = DirectionUtils.getRightDirection(minecart.getPreviousFacingDir());
 						newLine += " Right]";
 					}

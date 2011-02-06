@@ -20,7 +20,7 @@ public class MinecartManiaStationListener extends VehicleListener{
     			if (minecart.isOnRails()) {
     				if(event.getAttacker() != null && event.getAttacker().getEntityId() == minecart.minecart.getPassenger().getEntityId()) {
     					
-    					if (MinecartUtil.isInQueue(minecart)) {
+    					if (StationUtil.isInQueue(minecart)) {
     						event.setCancelled(true);
     						return;
     					}
@@ -31,7 +31,7 @@ public class MinecartManiaStationListener extends VehicleListener{
     						return;
     					}
     					minecart.setDataValue("preintersection velocity", null);
-    					velocity = MinecartUtil.alterMotionFromDirection(facingDir, velocity);
+    					velocity = StationUtil.alterMotionFromDirection(facingDir, velocity);
 		    			
 		    			//responding to chat direction prompt
     					if (minecart.isAtIntersection() && minecart.hasPlayerPassenger()) {

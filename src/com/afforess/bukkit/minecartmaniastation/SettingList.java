@@ -13,15 +13,9 @@ public class SettingList {
 				MinecartManiaStation.description.getName()
 		),
 		new Setting(
-				"Auto Intersection Prompts", 
-				Boolean.TRUE, 
-				"When a player reaches an intersection, they will be prompted for the direction they wish to go.",
-				MinecartManiaStation.description.getName()
-		),
-		new Setting(
-				"Intersection Prompts Only at Station Blocks", 
-				Boolean.FALSE, 
-				"When a player reaches an intersection, they will onyl be prompted for the direction they wish to go only if there is a station block underneath the intersection.",
+				"Intersection Prompts", 
+				new Integer(0),
+				"If set to 0, Will prompt users for their intended direction when a player reaches an intersection. If set to 1, will prompt users only if the intersection has a station block underneath. If set to 2 players will never be prompted at intersections.",
 				MinecartManiaStation.description.getName()
 		)
 	};

@@ -6,19 +6,38 @@ import com.afforess.bukkit.minecartmaniacore.DirectionUtils;
 import com.afforess.bukkit.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.bukkit.minecartmaniacore.MinecartManiaWorld;
 
-public class MinecartUtil {
+public class StationUtil {
 
 	public static int getStationBlockID() {
 		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Station Block"));
 	}
 	
-	public static boolean isAutoIntersectionPrompt() {
-		Object o = MinecartManiaWorld.getConfigurationValue("Auto Intersection Prompts");
-		if (o != null) {
-			Boolean value = (Boolean)o;
-			return value.booleanValue();
+	public static boolean isPromptUserAtAnyIntersection() {
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 0;
+	}
+	
+	public static boolean isStationIntersectionPrompt() {
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 1;
+	}
+	
+	public static boolean isNeverIntersectionPrompt() {
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 2;
+	}
+	
+	public static boolean shouldPromptUser(MinecartManiaMinecart minecart) {
+		if (isNeverIntersectionPrompt()) {
+			return false;
 		}
-		return false;
+		if (!minecart.hasPlayerPassenger()) {
+			return false;
+		}
+		if (isStationIntersectionPrompt()) {
+			if (minecart.getBlockIdBeneath() != getStationBlockID()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 	
 	public static boolean isInQueue(MinecartManiaMinecart minecart) {
@@ -67,14 +86,5 @@ public class MinecartUtil {
 		}
 		
 		return null;
-	}
-
-	public static boolean isStationIntersectionPrompt() {
-		Object o = MinecartManiaWorld.getConfigurationValue("Intersection Prompts Only at Station Blocks");
-		if (o != null) {
-			Boolean value = (Boolean)o;
-			return value.booleanValue();
-		}
-		return false;
 	}
 }

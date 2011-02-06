@@ -58,13 +58,20 @@ public class MinecartActionListener extends MinecartManiaListener{
 	
 	public void onMinecartIntersectionEvent(MinecartIntersectionEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
+		
+		if (event.isActionTaken()) {
+			return;
+		}
 	
-		if (minecart.getBlockIdBeneath() == MinecartUtil.getStationBlockID()) {
+		if (minecart.getBlockIdBeneath() == StationUtil.getStationBlockID()) {
 			SignCommands.processStation(event);
 		}
 		
-		if (!event.isActionTaken() && minecart.hasPlayerPassenger() && (MinecartUtil.isAutoIntersectionPrompt()
-				|| (minecart.getBlockIdBeneath() == MinecartUtil.getStationBlockID() && MinecartUtil.isStationIntersectionPrompt()))) {
+		if (event.isActionTaken()) {
+			return;
+		}
+		
+		if (StationUtil.shouldPromptUser(minecart)) {
 			
 			minecart.setDataValue("preintersection velocity", minecart.minecart.getVelocity().clone());
 			minecart.stopCart();
@@ -89,12 +96,12 @@ public class MinecartActionListener extends MinecartManiaListener{
 	public void onMinecartMotionStartEvent(MinecartMotionStartEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
 		if (minecart.isAtIntersection()) {
-			MinecartUtil.updateQueue(minecart);
+			StationUtil.updateQueue(minecart);
 		}
 	}
 	
 	public void onMinecartManiaMinecartDestroyedEvent(MinecartManiaMinecartDestroyedEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
-		MinecartUtil.updateQueue(minecart);
+		StationUtil.updateQueue(minecart);
 	}
 }
