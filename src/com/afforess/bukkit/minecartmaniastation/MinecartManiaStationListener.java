@@ -37,7 +37,7 @@ public class MinecartManiaStationListener extends VehicleListener{
     					if (minecart.isAtIntersection() && minecart.hasPlayerPassenger()) {
     						int data = DirectionUtils.getMinetrackRailDataForDirection(facingDir, minecart.getPreviousFacingDir());
     						if (data != -1) {
-    							MinecartManiaWorld.setBlockData(minecart.getX(), minecart.getY(), minecart.getZ(), data);
+    							MinecartManiaWorld.setBlockData(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), data);
     						}
     						minecart.minecart.setVelocity(velocity);
     						event.setCancelled(true);

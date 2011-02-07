@@ -124,7 +124,7 @@ public class SignCommands {
 						direction = DirectionUtils.getRightDirection(minecart.getPreviousFacingDir());
 						newLine += " Right]";
 					}
-					if (MinecartUtils.validMinecartTrack(minecart.getX(), minecart.getY(), minecart.getZ(), 2, direction)) {
+					if (MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, direction)) {
 						int data = DirectionUtils.getMinetrackRailDataForDirection(direction, minecart.getPreviousFacingDir());
 						if (data != -1) {
 							if (!newLine.equals(str)) {
@@ -132,7 +132,7 @@ public class SignCommands {
 								sign.update(true);
 							}
 							
-							Block oldBlock = MinecartManiaWorld.getBlockAt(minecart.getX(), minecart.getY(), minecart.getZ());
+							Block oldBlock = MinecartManiaWorld.getBlockAt(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ());
 							ArrayList<Integer> blockData = new ArrayList<Integer>();
 							blockData.add(new Integer(oldBlock.getX()));
 							blockData.add(new Integer(oldBlock.getY()));
@@ -140,7 +140,7 @@ public class SignCommands {
 							blockData.add(new Integer(oldBlock.getData()));
 							minecart.setDataValue("old rail data", blockData);
 							
-							MinecartManiaWorld.setBlockData(minecart.getX(), minecart.getY(), minecart.getZ(), data);
+							MinecartManiaWorld.setBlockData(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), data);
 							event.setActionTaken(true);
 							return;
 						}
