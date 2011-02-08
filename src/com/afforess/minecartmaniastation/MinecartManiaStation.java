@@ -1,4 +1,4 @@
-package com.afforess.bukkit.minecartmaniastation;
+package com.afforess.minecartmaniastation;
 
 import java.io.File;
 import java.util.logging.Logger;

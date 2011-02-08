@@ -1,4 +1,4 @@
-package com.afforess.bukkit.minecartmaniastation;
+package com.afforess.minecartmaniastation;
 
 import org.bukkit.entity.Minecart;
 import org.bukkit.event.vehicle.VehicleDamageEvent;

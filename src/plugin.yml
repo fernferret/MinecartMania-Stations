@@ -1,3 +1,4 @@
 name: Minecart Mania Station
-main: com.afforess.bukkit.minecartmaniastation.MinecartManiaStation
+main: com.afforess.minecartmaniastation.MinecartManiaStation
 version: 0.20
+author: Afforess

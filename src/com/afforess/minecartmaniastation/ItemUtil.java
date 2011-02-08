@@ -1,4 +1,4 @@
-package com.afforess.bukkit.minecartmaniastation;
+package com.afforess.minecartmaniastation;
 
 import org.bukkit.Material;
 
