@@ -26,6 +26,16 @@ public class SignCommands {
 				if (val.length != 2) {
 					continue;
 				}
+				//Strip header and ending characters
+				int start = val[0].indexOf("[");
+				int end = val[1].indexOf("]");
+				if (start > -1) {
+					val[0] = val[0].substring(start+1);
+				}
+				if (end > -1) {
+					val[1] = val[1].substring(0, end);
+				}
+				//Strip whitespace
 				val[0] = val[0].trim();
 				val[1] = val[1].trim();
 				boolean valid = false;
