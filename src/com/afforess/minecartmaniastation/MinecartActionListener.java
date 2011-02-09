@@ -6,15 +6,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.afforess.bukkit.minecartmaniacore.ChatUtils;
-import com.afforess.bukkit.minecartmaniacore.DirectionUtils;
-import com.afforess.bukkit.minecartmaniacore.MinecartManiaMinecart;
-import com.afforess.bukkit.minecartmaniacore.MinecartManiaWorld;
-import com.afforess.bukkit.minecartmaniacore.event.MinecartActionEvent;
-import com.afforess.bukkit.minecartmaniacore.event.MinecartIntersectionEvent;
-import com.afforess.bukkit.minecartmaniacore.event.MinecartManiaListener;
-import com.afforess.bukkit.minecartmaniacore.event.MinecartManiaMinecartDestroyedEvent;
-import com.afforess.bukkit.minecartmaniacore.event.MinecartMotionStartEvent;
+import com.afforess.minecartmaniacore.ChatUtils;
+import com.afforess.minecartmaniacore.DirectionUtils;
+import com.afforess.minecartmaniacore.MinecartManiaMinecart;
+import com.afforess.minecartmaniacore.MinecartManiaWorld;
+import com.afforess.minecartmaniacore.event.MinecartActionEvent;
+import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
+import com.afforess.minecartmaniacore.event.MinecartManiaListener;
+import com.afforess.minecartmaniacore.event.MinecartManiaMinecartDestroyedEvent;
+import com.afforess.minecartmaniacore.event.MinecartMotionStartEvent;
 
 public class MinecartActionListener extends MinecartManiaListener{
 
@@ -34,6 +34,9 @@ public class MinecartActionListener extends MinecartManiaListener{
 		MinecartManiaMinecart minecartAhead = minecart.getMinecartAhead();
 		while (true) {
 			if (minecartAhead == null) {
+				break;
+			}
+			if (minecartAhead.minecart.getEntityId() == minecart.minecart.getEntityId()) {
 				break;
 			}
 			if (minecartAhead.getMinecartAhead() == null) {

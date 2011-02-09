@@ -2,9 +2,9 @@ package com.afforess.minecartmaniastation;
 
 import org.bukkit.util.Vector;
 
-import com.afforess.bukkit.minecartmaniacore.DirectionUtils;
-import com.afforess.bukkit.minecartmaniacore.MinecartManiaMinecart;
-import com.afforess.bukkit.minecartmaniacore.MinecartManiaWorld;
+import com.afforess.minecartmaniacore.DirectionUtils;
+import com.afforess.minecartmaniacore.MinecartManiaMinecart;
+import com.afforess.minecartmaniacore.MinecartManiaWorld;
 
 public class StationUtil {
 

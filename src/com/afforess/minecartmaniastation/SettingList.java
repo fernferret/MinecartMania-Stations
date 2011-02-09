@@ -2,7 +2,7 @@ package com.afforess.minecartmaniastation;
 
 import org.bukkit.Material;
 
-import com.afforess.bukkit.minecartmaniacore.config.Setting;
+import com.afforess.minecartmaniacore.config.Setting;
 
 public class SettingList {
 	public final static Setting[] config = {
