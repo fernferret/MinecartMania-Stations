@@ -31,7 +31,8 @@ public class MinecartActionListener extends MinecartManiaListener{
 		}
 		
 		//stop moving, there is a queue ahead of us
-		MinecartManiaMinecart minecartAhead = minecart.getMinecartAhead();
+		//TODO Fix this
+		/*MinecartManiaMinecart minecartAhead = minecart.getMinecartAhead();
 		while (true) {
 			if (minecartAhead == null) {
 				break;
@@ -56,7 +57,7 @@ public class MinecartActionListener extends MinecartManiaListener{
 						ChatUtils.sendMultilineMessage(minecart.getPlayerPassenger(), "You've entered a queue. Please be patient.", ChatColor.YELLOW.toString());
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void onMinecartIntersectionEvent(MinecartIntersectionEvent event) {
