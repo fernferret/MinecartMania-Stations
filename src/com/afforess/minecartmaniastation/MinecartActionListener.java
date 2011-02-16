@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.afforess.minecartmaniacore.ChatUtils;
-import com.afforess.minecartmaniacore.DirectionUtils;
+import com.afforess.minecartmaniacore.utils.ChatUtils;
+import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.minecartmaniacore.event.MinecartActionEvent;

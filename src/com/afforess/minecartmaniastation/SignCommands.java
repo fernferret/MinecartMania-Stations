@@ -6,12 +6,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
-import com.afforess.minecartmaniacore.DirectionUtils;
+import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
-import com.afforess.minecartmaniacore.MinecartUtils;
-import com.afforess.minecartmaniacore.SignUtils;
-import com.afforess.minecartmaniacore.ItemUtils;
-import com.afforess.minecartmaniacore.StringUtils;
+import com.afforess.minecartmaniacore.utils.MinecartUtils;
+import com.afforess.minecartmaniacore.utils.SignUtils;
+import com.afforess.minecartmaniacore.utils.ItemUtils;
 import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
 
 public class SignCommands {
@@ -21,6 +20,7 @@ public class SignCommands {
 		
 		ArrayList<Sign> signList = SignUtils.getAdjacentSignList(minecart, 2);
 		for (Sign sign : signList) {
+			convertCraftBookSorter(sign);
 			for (int k = 0; k < 4; k++) {
 				String str = sign.getLine(k);
 				String newLine = "";
@@ -56,10 +56,10 @@ public class SignCommands {
 					}
 					if (!valid && minecart.hasPlayerPassenger() && str.toLowerCase().contains("st-")) {
 						String[] keys = val[0].split("-");
-						Integer signValue = Integer.parseInt(StringUtils.getNumber(keys[1]));
-						Integer stop = MinecartManiaWorld.getIntValue(minecart.getDataValue("stop at station"));
-						valid = signValue.intValue() == stop.intValue();
-						newLine = "[st-"+signValue.toString() +" :";
+						String st = keys[1];
+						String station = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation();
+						valid = station.equals(st);
+						newLine = "[st-"+st +" :";
 					}
 					if (!valid && minecart.hasPlayerPassenger()) {
 						valid = str.toLowerCase().indexOf(minecart.getPlayerPassenger().getName().toLowerCase()) > -1;
@@ -178,6 +178,19 @@ public class SignCommands {
 					}
 				}
 			}
+		}
+	}
+
+	private static void convertCraftBookSorter(Sign sign) {
+		if (sign.getLine(1).contains("[Sort]")) {
+			if (!sign.getLine(2).trim().isEmpty()) {
+				sign.setLine(2, "st-" + sign.getLine(2).trim().substring(1) + ": L");
+			}
+			if (!sign.getLine(3).trim().isEmpty()) {
+				sign.setLine(3, "st-" + sign.getLine(3).trim().substring(1) + ": R");
+			}
+			sign.setLine(1, "");
+			sign.update();
 		}
 	}
 }
