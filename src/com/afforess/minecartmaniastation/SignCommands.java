@@ -1,8 +1,6 @@
 package com.afforess.minecartmaniastation;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -12,6 +10,8 @@ import com.afforess.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.minecartmaniacore.utils.MinecartUtils;
 import com.afforess.minecartmaniacore.utils.SignUtils;
 import com.afforess.minecartmaniacore.utils.ItemUtils;
+import com.afforess.minecartmaniacore.utils.StringUtils;
+import com.afforess.minecartmaniacore.utils.WordUtils;
 import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
 
 public class SignCommands {
@@ -24,49 +24,51 @@ public class SignCommands {
 			convertCraftBookSorter(sign);
 			for (int k = 0; k < 4; k++) {
 				String str = sign.getLine(k);
-				String newLine = "";
+				String newLine = str;
 				String val[] = str.split(":");
 				if (val.length != 2) {
 					continue;
 				}
 				//Strip header and ending characters
-				int start = val[0].indexOf("[");
-				int end = val[1].indexOf("]");
-				if (start > -1) {
-					val[0] = val[0].substring(start+1);
-				}
-				if (end > -1) {
-					val[1] = val[1].substring(0, end);
-				}
+				val[0] = StringUtils.removeBrackets(val[0]);
+				val[1] = StringUtils.removeBrackets(val[1]);
 				//Strip whitespace
 				val[0] = val[0].trim();
 				val[1] = val[1].trim();
 				boolean valid = false;
 				if (minecart.isStandardMinecart()) {
 					if (!valid && str.toLowerCase().indexOf("mobs") > -1) {
-						newLine = "[Mobs : ";
 						valid = minecart.minecart.getPassenger() != null && !minecart.hasPlayerPassenger();
 					}
 					if (!valid && str.toLowerCase().indexOf("player") > -1) {
-						newLine = "[Player : ";
 						valid = minecart.hasPlayerPassenger();
 					}
 					if (!valid && str.toLowerCase().indexOf("empty") > -1) {
-						newLine = "[Empty : ";
 						valid = minecart.minecart.getPassenger() == null;
 					}
 					if (!valid && minecart.hasPlayerPassenger() && str.toLowerCase().contains("st-")) {
-						String[] keys = val[0].split("-| ?: ?"); // splits at "-" or ":" or " :" or " : " key[2] is everything after the colon (excluding a space if it's there)
+						String[] keys = val[0].split("-| ?: ?");
 						String st = keys[1];
-						String stop = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation();
-						valid = Pattern.matches(st, stop);
-						newLine = "[st-"+st +" :";
+						String stp = st; //st pattern
+						String station = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation();
+						int parseSetting = MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Station Sign Parsing Method"));
+						switch(parseSetting){
+							case 0: //default with no pattern matching
+								valid = station.equals(st);break;
+							case 1: //simple pattern matching
+								stp = stp.replace("\\", "\\\\") //escapes backslashes in case people use them in station names
+								.replace(".", "\\.") //escapes period
+								.replace("*", ".*") //converts *
+								.replace("?", ".") //converts ?
+								.replace("#", "\\d") //converts #
+								.replace("@", "[a-zA-Z]"); //converts @
+							case 2: //full regex //note the lack of break before this, case 1 comes down here after converting
+								valid = station.matches(stp); break;
+						}
 					}
 					if (!valid && minecart.hasPlayerPassenger()) {
 						valid = str.toLowerCase().indexOf(minecart.getPlayerPassenger().getName().toLowerCase()) > -1;
-						if (valid) {
-							newLine = "[" + minecart.getPlayerPassenger().getName() + " : ";
-						}
+
 					}
 					if (!valid && minecart.hasPlayerPassenger() && minecart.getPlayerPassenger().getItemInHand() != null) {
 						Material itemInHand = minecart.getPlayerPassenger().getItemInHand().getType();
@@ -79,20 +81,17 @@ public class SignCommands {
 							if (val[0].trim().indexOf("[") > -1) {
 								val[0] = val[0].trim().substring(val[0].trim().indexOf("[") + 1);
 							}
-							newLine = "[" + val[0].trim() + ":";
 						}
 					
 					}
 				}
 				else if (minecart.isStorageMinecart()) {
 					if (!valid && str.toLowerCase().indexOf("storage") > -1) {
-						newLine = "[Storage : ";
 						valid = true;
 					}
 				}
 				else if (minecart.isPoweredMinecart()) {
 					if (!valid && str.toLowerCase().indexOf("powered") > -1) {
-						newLine = "[Powered : ";
 						valid = true;
 					}
 				}
@@ -100,19 +99,15 @@ public class SignCommands {
 				//Note getDirectionOfMotion is unreliable on curves, use getPreviousFacingDir instead.
 				if (!valid && (val[0].equals("W") || val[0].toLowerCase().indexOf("west") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.WEST;
-					newLine = "[West : ";
 				}
 				else if (!valid && (val[0].equals("E") || val[0].toLowerCase().indexOf("east") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.EAST;
-					newLine = "[East : ";
 				}
 				else if (!valid && (val[0].equals("N") || val[0].toLowerCase().indexOf("north") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.NORTH;
-					newLine = "[North : ";
 				}
 				else if (!valid && (val[0].equals("S") || val[0].toLowerCase().indexOf("south") > -1)) {
 					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.SOUTH;
-					newLine = "[South : ";
 				}
 				
 				if (valid) {
@@ -121,39 +116,34 @@ public class SignCommands {
 					//Process STR first because of overlapping characters
 					if (val[1].equals("STR") || val[1].toLowerCase().indexOf("straight") > -1) {
 						direction = minecart.getPreviousFacingDir();
-						newLine += "STR]";
 					}
 					else if (val[1].equals("W") || val[1].toLowerCase().indexOf("west") > -1) {
 						direction = DirectionUtils.CompassDirection.WEST;
-						newLine += "West]";
 					}
 					else if (val[1].equals("E") || val[1].toLowerCase().indexOf("east") > -1) {
 						direction = DirectionUtils.CompassDirection.EAST;
-						newLine += "East]";
 					}
 					else if (val[1].equals("S") || val[1].toLowerCase().indexOf("south") > -1) {
 						direction = DirectionUtils.CompassDirection.SOUTH;
-						newLine += "South]";
 					}
 					else if (val[1].equals("N") || val[1].toLowerCase().indexOf("north") > -1) {
 						direction = DirectionUtils.CompassDirection.NORTH;
-						newLine += "North]";
 					}
 					else if (val[1].equals("L") || val[1].toLowerCase().indexOf("left") > -1) {
 						direction = DirectionUtils.getLeftDirection(minecart.getPreviousFacingDir());
-						newLine += "Left]";
 					}
 					else if (val[1].equals("R") || val[1].toLowerCase().indexOf("right") > -1) {
 						direction = DirectionUtils.getRightDirection(minecart.getPreviousFacingDir());
-						newLine += "Right]";
 					}
 					if (MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, direction)) {
 						int data = DirectionUtils.getMinetrackRailDataForDirection(direction, minecart.getPreviousFacingDir());
 						if (data != -1) {
-							if (!newLine.equals(str)) {
-								sign.setLine(k, newLine);
-								sign.update(true);
-							}
+							newLine = StringUtils.removeBrackets(newLine);
+							char[] ch = {' ', ':'};
+							newLine = WordUtils.capitalize(newLine, ch);
+							newLine = StringUtils.addBrackets(newLine);
+							sign.setLine(k, newLine);
+							sign.update(true);
 							
 							Block oldBlock = MinecartManiaWorld.getBlockAt(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ());
 							ArrayList<Integer> blockData = new ArrayList<Integer>();
