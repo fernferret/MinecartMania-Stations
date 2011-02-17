@@ -65,6 +65,9 @@ public class SignCommands {
 							case 2: //full regex //note the lack of break before this, case 1 comes down here after converting
 								valid = station.matches(stp); break;
 						}
+						if (valid & MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getDataValue("Reset Station Data") == null) {
+							MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).setLastStation("");
+						}
 					}
 					if (!valid && minecart.hasPlayerPassenger()) {
 						valid = str.toLowerCase().indexOf(minecart.getPlayerPassenger().getName().toLowerCase()) > -1;
