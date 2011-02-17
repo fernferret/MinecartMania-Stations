@@ -1,6 +1,7 @@
 package com.afforess.minecartmaniastation;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -55,10 +56,10 @@ public class SignCommands {
 						valid = minecart.minecart.getPassenger() == null;
 					}
 					if (!valid && minecart.hasPlayerPassenger() && str.toLowerCase().contains("st-")) {
-						String[] keys = val[0].split("-");
+						String[] keys = val[0].split("-| ?: ?"); // splits at "-" or ":" or " :" or " : " key[2] is everything after the colon (excluding a space if it's there)
 						String st = keys[1];
-						String station = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation();
-						valid = station.equals(st);
+						String stop = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation();
+						valid = Pattern.matches(st, stop);
 						newLine = "[st-"+st +" :";
 					}
 					if (!valid && minecart.hasPlayerPassenger()) {
@@ -69,8 +70,11 @@ public class SignCommands {
 					}
 					if (!valid && minecart.hasPlayerPassenger() && minecart.getPlayerPassenger().getItemInHand() != null) {
 						Material itemInHand = minecart.getPlayerPassenger().getItemInHand().getType();
-						Material signData = ItemUtils.itemStringToMaterial(val[0].trim());
-						valid = signData != null && signData.getId() == itemInHand.getId();
+						Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
+						for (Material item : signData) {
+							valid = item != null && item.getId() == itemInHand.getId();
+							if (valid) break;
+						}
 						if (valid) {
 							if (val[0].trim().indexOf("[") > -1) {
 								val[0] = val[0].trim().substring(val[0].trim().indexOf("[") + 1);
