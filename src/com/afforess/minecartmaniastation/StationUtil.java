@@ -1,8 +1,11 @@
 package com.afforess.minecartmaniastation;
 
+import java.util.ArrayList;
+
 import org.bukkit.util.Vector;
 
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
+import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
 
@@ -86,5 +89,39 @@ public class StationUtil {
 		}
 		
 		return null;
+	}
+	
+	public static String buildValidDirectionString(ArrayList<CompassDirection> restricted) {
+		String valid = "";
+		boolean first = true;
+		if (!restricted.contains(CompassDirection.NORTH)){
+			if (!first) {
+				valid += " or ";
+			}
+			valid += CompassDirection.NORTH.toString();
+			first = false;
+		}
+		if (!restricted.contains(CompassDirection.EAST)){
+			if (!first) {
+				valid += " or ";
+			}
+			valid += CompassDirection.EAST.toString();
+			first = false;
+		}
+		if (!restricted.contains(CompassDirection.SOUTH)){
+			if (!first) {
+				valid += " or ";
+			}
+			valid += CompassDirection.SOUTH.toString();
+			first = false;
+		}
+		if (!restricted.contains(CompassDirection.WEST)){
+			if (!first) {
+				valid += " or ";
+			}
+			valid += CompassDirection.WEST.toString();
+			first = false;
+		}
+		return valid;
 	}
 }

@@ -7,6 +7,7 @@ import org.bukkit.block.Sign;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
+import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
 import com.afforess.minecartmaniacore.utils.MinecartUtils;
 import com.afforess.minecartmaniacore.utils.SignUtils;
 import com.afforess.minecartmaniacore.utils.ItemUtils;
@@ -189,5 +190,35 @@ public class SignCommands {
 			sign.setLine(1, "");
 			sign.update();
 		}
+	}
+
+	public static ArrayList<CompassDirection> getRestrictedDirections(MinecartManiaMinecart minecart) {
+		ArrayList<CompassDirection> restricted = new ArrayList<CompassDirection>(4);
+		ArrayList<Sign> signList = SignUtils.getAdjacentSignList(minecart, 2);
+		for (Sign sign : signList) {
+			for (int i = 0; i < 4; i++) {
+				if (sign.getLine(i).toLowerCase().contains("restrict")) {
+					String[] directions = sign.getLine(i).split(":");
+					if (directions.length > 1) {
+						for (int j = 1; j < directions.length; j++) {
+							if (directions[j].contains("N")) {
+								restricted.add(CompassDirection.NORTH);
+							}
+							if (directions[j].contains("S")) {
+								restricted.add(CompassDirection.SOUTH);
+							}
+							if (directions[j].contains("E")) {
+								restricted.add(CompassDirection.EAST);
+							}
+							if (directions[j].contains("W")) {
+								restricted.add(CompassDirection.WEST);
+							}
+						}
+						return restricted;
+					}
+				}
+			}
+		}
+		return restricted;
 	}
 }

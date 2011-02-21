@@ -1,6 +1,5 @@
 package com.afforess.minecartmaniastation;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
@@ -10,22 +9,12 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.afforess.minecartmaniacore.Configuration;
 
 
 public class MinecartManiaStation extends JavaPlugin{
-	
-	public MinecartManiaStation(PluginLoader pluginLoader, Server instance,
-			PluginDescriptionFile desc, File folder, File plugin,
-			ClassLoader cLoader) {
-		super(pluginLoader, instance, desc, folder, plugin, cLoader);
-		server = instance;
-		description = desc;
-	}
-
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static Server server;
 	public static PluginDescriptionFile description;
@@ -38,6 +27,8 @@ public class MinecartManiaStation extends JavaPlugin{
 	}
 
 	public void onEnable() {
+		server = this.getServer();
+		description = this.getDescription();
 		Plugin MinecartMania = server.getPluginManager().getPlugin("Minecart Mania Core");
 		
 		if (MinecartMania == null) {
