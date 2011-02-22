@@ -32,7 +32,22 @@ public class MinecartManiaStationListener extends VehicleListener{
 		    			CompassDirection facingDir = DirectionUtils.getDirectionFromMinecartRotation((minecart.minecart.getPassenger().getLocation().getYaw() - 90.0F) % 360.0F);
 		    			ArrayList<CompassDirection> restricted = SignCommands.getRestrictedDirections(minecart);
 		    			//Check if the direction is valid
-		    			if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, facingDir)) {
+		    			if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.NORTH)) {
+		    				if (!restricted.contains(facingDir)) {
+		    					restricted.add(facingDir);
+		    				}
+		    			}
+		    			if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.SOUTH)) {
+		    				if (!restricted.contains(facingDir)) {
+		    					restricted.add(facingDir);
+		    				}
+		    			}
+		    			if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.EAST)) {
+		    				if (!restricted.contains(facingDir)) {
+		    					restricted.add(facingDir);
+		    				}
+		    			}
+		    			if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.WEST)) {
 		    				if (!restricted.contains(facingDir)) {
 		    					restricted.add(facingDir);
 		    				}
