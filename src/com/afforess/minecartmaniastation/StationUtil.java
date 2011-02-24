@@ -2,9 +2,12 @@ package com.afforess.minecartmaniastation;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.util.Vector;
 
+import com.afforess.minecartmaniacore.utils.ChatUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
+import com.afforess.minecartmaniacore.utils.MinecartUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
@@ -123,5 +126,39 @@ public class StationUtil {
 			first = false;
 		}
 		return valid;
+	}
+
+	public static boolean isValidDirection(CompassDirection facingDir, MinecartManiaMinecart minecart) {
+		ArrayList<CompassDirection> restricted = SignCommands.getRestrictedDirections(minecart);
+		//Check if the direction is valid
+		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.NORTH)) {
+			if (!restricted.contains(facingDir)) {
+				restricted.add(facingDir);
+			}
+		}
+		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.SOUTH)) {
+			if (!restricted.contains(facingDir)) {
+				restricted.add(facingDir);
+			}
+		}
+		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.EAST)) {
+			if (!restricted.contains(facingDir)) {
+				restricted.add(facingDir);
+			}
+		}
+		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.WEST)) {
+			if (!restricted.contains(facingDir)) {
+				restricted.add(facingDir);
+			}
+		}
+		if (restricted.contains(facingDir)){
+			if (minecart.hasPlayerPassenger()) {
+				ChatUtils.sendMultilineMessage(minecart.getPlayerPassenger(), "Not a valid direction.", ChatColor.RED.toString());
+				String valid = "You can go " + StationUtil.buildValidDirectionString(restricted);
+				ChatUtils.sendMultilineMessage(minecart.getPlayerPassenger(), valid, ChatColor.YELLOW.toString());
+				return false;
+			}
+		}
+		return true;
 	}
 }
