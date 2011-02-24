@@ -132,23 +132,23 @@ public class StationUtil {
 		ArrayList<CompassDirection> restricted = SignCommands.getRestrictedDirections(minecart);
 		//Check if the direction is valid
 		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.NORTH)) {
-			if (!restricted.contains(facingDir)) {
-				restricted.add(facingDir);
+			if (!restricted.contains(CompassDirection.NORTH)) {
+				restricted.add(CompassDirection.NORTH);
 			}
 		}
 		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.SOUTH)) {
-			if (!restricted.contains(facingDir)) {
-				restricted.add(facingDir);
+			if (!restricted.contains(CompassDirection.SOUTH)) {
+				restricted.add(CompassDirection.SOUTH);
 			}
 		}
 		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.EAST)) {
-			if (!restricted.contains(facingDir)) {
-				restricted.add(facingDir);
+			if (!restricted.contains(CompassDirection.EAST)) {
+				restricted.add(CompassDirection.EAST);
 			}
 		}
 		if (!MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, CompassDirection.WEST)) {
-			if (!restricted.contains(facingDir)) {
-				restricted.add(facingDir);
+			if (!restricted.contains(CompassDirection.WEST)) {
+				restricted.add(CompassDirection.WEST);
 			}
 		}
 		if (restricted.contains(facingDir)){
