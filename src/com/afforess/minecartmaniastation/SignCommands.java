@@ -85,8 +85,12 @@ public class SignCommands {
 					}
 				}
 				else if (minecart.isStorageMinecart()) {
-					if (!valid && str.toLowerCase().indexOf("storage") > -1) {
+					if (!valid && str.toLowerCase().contains("storage")) {
 						valid = true;
+					}
+					if (!valid && str.toLowerCase().contains("cargo")) {
+						System.out.println(((MinecartManiaStorageCart)minecart).firstEmpty());
+						valid = ((MinecartManiaStorageCart)minecart).isEmpty();
 					}
 					if (!valid) {
 						Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
