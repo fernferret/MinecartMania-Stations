@@ -89,7 +89,6 @@ public class SignCommands {
 						valid = true;
 					}
 					if (!valid && str.toLowerCase().contains("cargo")) {
-						System.out.println(((MinecartManiaStorageCart)minecart).firstEmpty());
 						valid = ((MinecartManiaStorageCart)minecart).isEmpty();
 					}
 					if (!valid) {
