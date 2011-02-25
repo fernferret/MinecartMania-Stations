@@ -26,13 +26,12 @@ public class MinecartManiaStationListener extends VehicleListener{
     					}
     					CompassDirection facingDir = DirectionUtils.getDirectionFromMinecartRotation((minecart.minecart.getPassenger().getLocation().getYaw() - 90.0F) % 360.0F);
 		    			
-		    			Vector velocity = (Vector)minecart.getDataValue("preintersection velocity");
+    					Vector velocity = (Vector)minecart.getDataValue("preintersection velocity");
     					if (velocity == null) {
     						event.setCancelled(true);
     						event.setDamage(0);
     						return;
     					}
-    					minecart.setDataValue("preintersection velocity", null);
     					velocity = StationUtil.alterMotionFromDirection(facingDir, velocity);
 		    			
 		    			//responding to chat direction prompt
@@ -43,6 +42,7 @@ public class MinecartManiaStationListener extends VehicleListener{
 	    							MinecartManiaWorld.setBlockData(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), data);
 	    						}
 	    						minecart.minecart.setVelocity(velocity);
+	    						minecart.setDataValue("preintersection velocity", null);
     						}
     						event.setCancelled(true);
     						event.setDamage(0);

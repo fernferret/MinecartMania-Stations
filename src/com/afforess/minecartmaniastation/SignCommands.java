@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
+import com.afforess.minecartmaniacore.MinecartManiaStorageCart;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
@@ -80,18 +81,19 @@ public class SignCommands {
 						for (Material item : signData) {
 							valid = item != null && item.getId() == itemInHand.getId();
 							if (valid) break;
-						}
-						if (valid) {
-							if (val[0].trim().indexOf("[") > -1) {
-								val[0] = val[0].trim().substring(val[0].trim().indexOf("[") + 1);
-							}
-						}
-					
+						}					
 					}
 				}
 				else if (minecart.isStorageMinecart()) {
 					if (!valid && str.toLowerCase().indexOf("storage") > -1) {
 						valid = true;
+					}
+					if (!valid) {
+						Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
+						for (Material item : signData) {
+							valid = item != null && (((MinecartManiaStorageCart)minecart).contains(item));
+							if (valid) break;
+						}					
 					}
 				}
 				else if (minecart.isPoweredMinecart()) {
