@@ -29,7 +29,6 @@ public class MinecartManiaStationListener extends VehicleListener{
     					Vector velocity = (Vector)minecart.getDataValue("preintersection velocity");
     					if (velocity == null) {
     						event.setCancelled(true);
-    						event.setDamage(0);
     						return;
     					}
     					velocity = StationUtil.alterMotionFromDirection(facingDir, velocity);
@@ -45,7 +44,6 @@ public class MinecartManiaStationListener extends VehicleListener{
 	    						minecart.setDataValue("preintersection velocity", null);
     						}
     						event.setCancelled(true);
-    						event.setDamage(0);
     					}
     				}
     			}
