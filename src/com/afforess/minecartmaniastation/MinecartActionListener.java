@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
 import com.afforess.minecartmaniacore.utils.ChatUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.minecartmaniacore.event.MinecartActionEvent;
 import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
+import com.afforess.minecartmaniacore.event.MinecartLaunchedEvent;
 import com.afforess.minecartmaniacore.event.MinecartManiaListener;
 import com.afforess.minecartmaniacore.event.MinecartManiaMinecartDestroyedEvent;
 import com.afforess.minecartmaniacore.event.MinecartMotionStartEvent;
@@ -95,6 +95,13 @@ public class MinecartActionListener extends MinecartManiaListener{
 			ChatUtils.sendMultilineMessage(passenger, "Tap your minecart in the desired direction", ChatColor.YELLOW.toString());
 		}
 		
+	}
+	
+	public void onMinecartLaunchedEvent(MinecartLaunchedEvent event) {
+		if (event.isActionTaken()) {
+			return;
+		}
+		SignCommands.processStation(event);
 	}
 	
 	public void onMinecartMotionStartEvent(MinecartMotionStartEvent event) {

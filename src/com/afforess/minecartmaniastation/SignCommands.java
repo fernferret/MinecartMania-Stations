@@ -14,11 +14,12 @@ import com.afforess.minecartmaniacore.utils.SignUtils;
 import com.afforess.minecartmaniacore.utils.ItemUtils;
 import com.afforess.minecartmaniacore.utils.StringUtils;
 import com.afforess.minecartmaniacore.utils.WordUtils;
-import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
+import com.afforess.minecartmaniacore.event.MinecartEvent;
+import com.afforess.minecartmaniacore.event.MinecartLaunchedEvent;
 
 public class SignCommands {
 
-	public static void processStation(MinecartIntersectionEvent event) {
+	public static void processStation(MinecartEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
 		
 		ArrayList<Sign> signList = SignUtils.getAdjacentSignList(minecart, 2);
@@ -144,6 +145,11 @@ public class SignCommands {
 					else if (val[1].equals("R") || val[1].toLowerCase().indexOf("right") > -1) {
 						direction = DirectionUtils.getRightDirection(minecart.getPreviousFacingDir());
 					}
+					if (event instanceof MinecartLaunchedEvent) {
+						minecart.setMotion(direction, 0.6D);
+						((MinecartLaunchedEvent)event).setLaunchSpeed(minecart.minecart.getVelocity());
+					}
+					System.out.println(direction);
 					if (MinecartUtils.validMinecartTrack(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), 2, direction)) {
 						int data = DirectionUtils.getMinetrackRailDataForDirection(direction, minecart.getPreviousFacingDir());
 						if (data != -1) {
@@ -177,7 +183,6 @@ public class SignCommands {
 								return;
 							}
 						}
-						
 					}
 				}
 			}
