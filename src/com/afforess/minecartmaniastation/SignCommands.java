@@ -94,8 +94,9 @@ public class SignCommands {
 					}					
 				}
 				
+				//empty storage minecart condition
 				if (!valid) {
-					valid = minecart.isStorageMinecart() && str.toLowerCase().contains("cargo");
+					valid = minecart.isStorageMinecart() && str.toLowerCase().contains("cargo") && ((MinecartManiaStorageCart)minecart).isEmpty();
 				}
 				
 				//Storage minecart condition
