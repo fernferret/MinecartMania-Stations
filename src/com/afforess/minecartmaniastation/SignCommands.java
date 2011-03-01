@@ -209,18 +209,18 @@ public class SignCommands {
 
 	private static boolean processStationCommand(MinecartManiaMinecart minecart, String str) {
 		boolean valid = false;
-		if (!str.contains("st-")) {
+		if (!str.toLowerCase().contains("st-")) {
 			return false;
 		}
-		String[] val = str.split(":");
+		String[] val = str.toLowerCase().split(":");
 		String[] keys = val[0].split("-| ?: ?");
 		String st = keys[1];
 		String stp = st; //st pattern
-		String station = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation();
+		String station = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation().toLowerCase();
 		int parseSetting = MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Station Sign Parsing Method"));
 		switch(parseSetting){
 			case 0: //default with no pattern matching
-				valid = station.equals(st);break;
+				valid = station.equalsIgnoreCase(st);break;
 			case 1: //simple pattern matching
 				stp = stp.replace("\\", "\\\\") //escapes backslashes in case people use them in station names
 				.replace(".", "\\.") //escapes period
@@ -231,7 +231,7 @@ public class SignCommands {
 			case 2: //full regex //note the lack of break before this, case 1 comes down here after converting
 				valid = station.matches(stp); break;
 		}
-		if (valid & MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getDataValue("Reset Station Data") == null) {
+		if (valid && MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getDataValue("Reset Station Data") == null) {
 			MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).setLastStation("");
 		}
 		return valid;
