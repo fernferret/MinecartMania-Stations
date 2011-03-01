@@ -85,13 +85,15 @@ public class SignCommands {
 				
 				//Storage minecart contains item(s) condition
 				if (!valid) {
-					Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
-					for (Material item : signData) {
-						if (item != null && (((MinecartManiaStorageCart)minecart).contains(item))) {
-							valid = true;
-							break;
-						}
-					}					
+					if (minecart.isStorageMinecart()) {
+						Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
+						for (Material item : signData) {
+							if (item != null && (((MinecartManiaStorageCart)minecart).contains(item))) {
+								valid = true;
+								break;
+							}
+						}	
+					}
 				}
 				
 				//empty storage minecart condition
@@ -111,7 +113,8 @@ public class SignCommands {
 				
 				//Redstone power condition
 				if (!valid) {
-					valid = str.toLowerCase().contains("redstone") && minecart.isPoweredBeneath();
+					valid = str.toLowerCase().contains("redstone") && (minecart.isPoweredBeneath() ||
+							MinecartManiaWorld.isBlockIndirectlyPowered(minecart.minecart.getWorld(), minecart.getX(), minecart.getY() - 2, minecart.getZ()));
 				}
 
 				
@@ -188,6 +191,7 @@ public class SignCommands {
 							//change the track dirtion
 							MinecartManiaWorld.setBlockData(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), data);
 							event.setActionTaken(true);
+							return;
 						}
 						else if (DirectionUtils.getOppositeDirection(direction).equals(minecart.getPreviousFacingDir())) {
 							//format the sign
@@ -195,6 +199,7 @@ public class SignCommands {
 							sign.update(true);
 							minecart.reverse();
 							event.setActionTaken(true);
+							return;
 						}
 					}
 				}

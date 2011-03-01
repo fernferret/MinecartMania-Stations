@@ -19,7 +19,6 @@ public class MinecartManiaStation extends JavaPlugin{
 	public static Server server;
 	public static PluginDescriptionFile description;
 	public static MinecartActionListener listener = new MinecartActionListener();
-	public static MinecartManiaStationListener vehicleListener = new MinecartManiaStationListener();
 
 	public void onDisable() {
 		// TODO Auto-generated method stub
@@ -38,9 +37,7 @@ public class MinecartManiaStation extends JavaPlugin{
 		}
 		else {
 			Configuration.loadConfiguration(description, SettingList.config);
-	        getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, listener, Priority.High, this);
-	        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_DAMAGE, vehicleListener, Priority.High, this);
-	        getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, vehicleListener, Priority.Low, this);
+	        getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, listener, Priority.Low, this);
 	        
 	        PluginDescriptionFile pdfFile = this.getDescription();
 	        log.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );

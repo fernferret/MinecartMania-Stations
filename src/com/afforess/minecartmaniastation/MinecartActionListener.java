@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
 import com.afforess.minecartmaniacore.utils.ChatUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
+import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.minecartmaniacore.event.MinecartActionEvent;
+import com.afforess.minecartmaniacore.event.MinecartClickedEvent;
 import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
 import com.afforess.minecartmaniacore.event.MinecartLaunchedEvent;
 import com.afforess.minecartmaniacore.event.MinecartManiaListener;
@@ -114,5 +118,37 @@ public class MinecartActionListener extends MinecartManiaListener{
 	public void onMinecartManiaMinecartDestroyedEvent(MinecartManiaMinecartDestroyedEvent event) {
 		MinecartManiaMinecart minecart = event.getMinecart();
 		StationUtil.updateQueue(minecart);
+	}
+	
+	public void onMinecartClickedEvent(MinecartClickedEvent event) {
+		if (event.isActionTaken()) {
+			return;
+		}
+		MinecartManiaMinecart minecart = event.getMinecart();
+		if (StationUtil.isInQueue(minecart)) {
+			event.setActionTaken(true);
+			return;
+		}
+		CompassDirection facingDir = DirectionUtils.getDirectionFromMinecartRotation((minecart.minecart.getPassenger().getLocation().getYaw() - 90.0F) % 360.0F);
+		
+		Vector velocity = (Vector)minecart.getDataValue("preintersection velocity");
+		if (velocity == null) {
+			return;
+		}
+		
+		velocity = StationUtil.alterMotionFromDirection(facingDir, velocity);
+		
+		//responding to chat direction prompt
+		if (minecart.isAtIntersection() && minecart.hasPlayerPassenger()) {
+			if (StationUtil.isValidDirection(facingDir, minecart)) {
+				int data = DirectionUtils.getMinetrackRailDataForDirection(facingDir, minecart.getPreviousFacingDir());
+				if (data != -1) {
+					MinecartManiaWorld.setBlockData(minecart.minecart.getWorld(), minecart.getX(), minecart.getY(), minecart.getZ(), data);
+				}
+				minecart.minecart.setVelocity(velocity);
+				minecart.setDataValue("preintersection velocity", null);
+			}
+			event.setActionTaken(true);
+		}
 	}
 }
