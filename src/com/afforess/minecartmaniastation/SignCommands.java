@@ -136,7 +136,7 @@ public class SignCommands {
 				}
 				
 				if (valid) {
-					DirectionUtils.CompassDirection direction = DirectionUtils.CompassDirection.NO_DIRECTION;
+					CompassDirection direction = CompassDirection.NO_DIRECTION;
 					
 					//Process STR first because of overlapping characters
 					if (val[1].equals("STR") || val[1].toLowerCase().indexOf("straight") > -1) {
@@ -162,7 +162,7 @@ public class SignCommands {
 					}
 					
 					//Special case - if we are at a launcher, set the launch speed as well
-					if (event instanceof MinecartLaunchedEvent) {
+					if (event instanceof MinecartLaunchedEvent && direction != CompassDirection.NO_DIRECTION) {
 						minecart.setMotion(direction, 0.6D);
 						((MinecartLaunchedEvent)event).setLaunchSpeed(minecart.minecart.getVelocity());
 					}
