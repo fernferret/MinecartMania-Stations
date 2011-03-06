@@ -1,21 +1,23 @@
 package com.afforess.minecartmaniastation;
 
 import java.util.ArrayList;
-import org.bukkit.Material;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+
+import com.afforess.minecartmaniacore.Item;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaStorageCart;
-import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
-import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
-import com.afforess.minecartmaniacore.utils.MinecartUtils;
-import com.afforess.minecartmaniacore.utils.SignUtils;
-import com.afforess.minecartmaniacore.utils.ItemUtils;
-import com.afforess.minecartmaniacore.utils.StringUtils;
-import com.afforess.minecartmaniacore.utils.WordUtils;
 import com.afforess.minecartmaniacore.event.MinecartEvent;
 import com.afforess.minecartmaniacore.event.MinecartLaunchedEvent;
+import com.afforess.minecartmaniacore.utils.DirectionUtils;
+import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
+import com.afforess.minecartmaniacore.utils.ItemUtils;
+import com.afforess.minecartmaniacore.utils.MinecartUtils;
+import com.afforess.minecartmaniacore.utils.SignUtils;
+import com.afforess.minecartmaniacore.utils.StringUtils;
+import com.afforess.minecartmaniacore.utils.WordUtils;
 
 public class SignCommands {
 
@@ -72,10 +74,10 @@ public class SignCommands {
 				//Player passenger contains item in hand condition
 				if (!valid) {
 					if (minecart.hasPlayerPassenger() && minecart.getPlayerPassenger().getItemInHand() != null) {
-						Material itemInHand = minecart.getPlayerPassenger().getItemInHand().getType();
-						Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
-						for (Material item : signData) {
-							if (item != null && item.getId() == itemInHand.getId()) {
+						Item itemInHand = Item.materialToItem(minecart.getPlayerPassenger().getItemInHand().getType());
+						Item[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
+						for (Item item : signData) {
+							if (item != null && item.equals(itemInHand)) {
 								valid = true;
 								break;
 							}
@@ -86,8 +88,8 @@ public class SignCommands {
 				//Storage minecart contains item(s) condition
 				if (!valid) {
 					if (minecart.isStorageMinecart()) {
-						Material[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
-						for (Material item : signData) {
+						Item[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
+						for (Item item : signData) {
 							if (item != null && (((MinecartManiaStorageCart)minecart).contains(item))) {
 								valid = true;
 								break;
