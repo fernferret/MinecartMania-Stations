@@ -3,8 +3,6 @@ package com.afforess.minecartmaniastation;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
@@ -42,12 +40,5 @@ public class MinecartManiaStation extends JavaPlugin{
 	        PluginDescriptionFile pdfFile = this.getDescription();
 	        log.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		}
-	}
-	
-	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if (commandLabel.contains("reloadconfig")) {
-			Configuration.loadConfiguration(description, SettingList.config);
-		}
-		return true;
 	}
 }

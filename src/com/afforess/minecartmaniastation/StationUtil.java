@@ -30,6 +30,13 @@ public class StationUtil {
 		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 2;
 	}
 	
+	public static boolean isStationCommandNeverResets() {
+		if (MinecartManiaWorld.getConfigurationValue("Station Command Saves After Use") != null) {
+			return (Boolean)MinecartManiaWorld.getConfigurationValue("Station Command Saves After Use");
+		}
+		return false;
+	}
+	
 	public static boolean shouldPromptUser(MinecartManiaMinecart minecart) {
 		if (isNeverIntersectionPrompt()) {
 			return false;

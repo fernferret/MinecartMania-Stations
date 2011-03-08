@@ -243,7 +243,9 @@ public class SignCommands {
 				valid = station.matches(stp); break;
 		}
 		if (valid && MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getDataValue("Reset Station Data") == null) {
-			MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).setLastStation("");
+			if (!StationUtil.isStationCommandNeverResets()) {
+				MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).setLastStation("");
+			}
 		}
 		return valid;
 	}

@@ -23,6 +23,12 @@ public class SettingList {
 				new Integer(0),
 				"0 - simple parsing with no pattern matching. 1 - simple pattern matching. 2 - full regex parsing.",
 				MinecartManiaStation.description.getName()
+		),
+		new Setting(
+				"Station Command Saves After Use", 
+				Boolean.FALSE,
+				"After passing one intersection, the /st command will not be cleared.",
+				MinecartManiaStation.description.getName()
 		)
 	};
 
