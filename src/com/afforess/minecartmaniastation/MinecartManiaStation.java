@@ -9,7 +9,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.afforess.minecartmaniacore.Configuration;
+import com.afforess.minecartmaniacore.MinecartManiaCore;
+import com.afforess.minecartmaniacore.config.MinecartManiaConfigurationParser;
 
 
 public class MinecartManiaStation extends JavaPlugin{
@@ -34,7 +35,7 @@ public class MinecartManiaStation extends JavaPlugin{
 			this.setEnabled(false);
 		}
 		else {
-			Configuration.loadConfiguration(description, SettingList.config);
+			MinecartManiaConfigurationParser.read(description.getName().replaceAll(" ","") + "Configuration.xml", MinecartManiaCore.dataDirectory, SettingList.config);
 	        getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, listener, Priority.Normal, this);
 	        
 	        PluginDescriptionFile pdfFile = this.getDescription();

@@ -44,6 +44,11 @@ public class SignCommands {
 				boolean valid = false;
 				//end of data setup
 				
+				//defaultt condition
+				if (!valid) {
+					valid = str.toLowerCase().contains("default");
+				}
+				
 				//empty minecart condition
 				if (!valid) {
 					valid = minecart.isStandardMinecart() && minecart.minecart.getPassenger() == null && str.toLowerCase().contains("empty");
@@ -68,14 +73,15 @@ public class SignCommands {
 				
 				//Player name matches sign name condition
 				if (!valid) {
-					valid = minecart.hasPlayerPassenger() && str.equalsIgnoreCase(minecart.getPlayerPassenger().getName());
+					valid = minecart.hasPlayerPassenger() && val[0].equalsIgnoreCase(minecart.getPlayerPassenger().getName());
 				}
 				
 				//Player passenger contains item in hand condition
 				if (!valid) {
 					if (minecart.hasPlayerPassenger() && minecart.getPlayerPassenger().getItemInHand() != null) {
-						Item itemInHand = Item.materialToItem(minecart.getPlayerPassenger().getItemInHand().getType());
-						Item[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
+						Item itemInHand = Item.getItem(minecart.getPlayerPassenger().getItemInHand().getTypeId(), minecart.getPlayerPassenger().getItemInHand().getDurability());
+						Item[] signData = ItemUtils.getItemStringToMaterial(val[0]);
+						
 						for (Item item : signData) {
 							if (item != null && item.equals(itemInHand)) {
 								valid = true;
@@ -162,6 +168,11 @@ public class SignCommands {
 					}
 					else if (val[1].equals("D") || val[1].toLowerCase().contains("destroy")) {
 						direction = null;
+					}
+					else if (val[1].equals("P") || val[1].toLowerCase().contains("prompt")) {
+						if (minecart.hasPlayerPassenger()) {
+							return;//Break out and let it fall back into the standard intersection prompting
+						}
 					}
 					
 					//Special case - if we are at a launcher, set the launch speed as well
