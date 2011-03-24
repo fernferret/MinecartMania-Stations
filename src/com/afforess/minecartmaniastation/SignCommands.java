@@ -171,6 +171,7 @@ public class SignCommands {
 					}
 					else if (val[1].equals("P") || val[1].toLowerCase().contains("prompt")) {
 						if (minecart.hasPlayerPassenger()) {
+							minecart.setDataValue("Prompt Override", true);
 							return;//Break out and let it fall back into the standard intersection prompting
 						}
 					}
@@ -239,7 +240,7 @@ public class SignCommands {
 		String st = keys[1];
 		String stp = st; //st pattern
 		String station = MinecartManiaWorld.getMinecartManiaPlayer(minecart.getPlayerPassenger()).getLastStation().toLowerCase();
-		int parseSetting = MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Station Sign Parsing Method"));
+		int parseSetting = MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("StationSignParsingMethod"));
 		switch(parseSetting){
 			case 0: //default with no pattern matching
 				valid = station.equalsIgnoreCase(st);break;

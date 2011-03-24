@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.util.Vector;
 
+import com.afforess.minecartmaniacore.config.ControlBlockList;
 import com.afforess.minecartmaniacore.utils.ChatUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.utils.MinecartUtils;
@@ -14,38 +15,48 @@ import com.afforess.minecartmaniacore.MinecartManiaWorld;
 
 public class StationUtil {
 
-	public static int getStationBlockID() {
-		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Station Block"));
-	}
-	
 	public static boolean isPromptUserAtAnyIntersection() {
-		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 0;
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("IntersectionPrompts")) == 0;
 	}
 	
 	public static boolean isStationIntersectionPrompt() {
-		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 1;
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("IntersectionPrompts")) == 1;
 	}
 	
 	public static boolean isNeverIntersectionPrompt() {
-		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("Intersection Prompts")) == 2;
+		return MinecartManiaWorld.getIntValue(MinecartManiaWorld.getConfigurationValue("IntersectionPrompts")) == 2;
 	}
 	
 	public static boolean isStationCommandNeverResets() {
-		if (MinecartManiaWorld.getConfigurationValue("Station Command Saves After Use") != null) {
-			return (Boolean)MinecartManiaWorld.getConfigurationValue("Station Command Saves After Use");
+		if (MinecartManiaWorld.getConfigurationValue("StationCommandSavesAfterUse") != null) {
+			return (Boolean)MinecartManiaWorld.getConfigurationValue("StationCommandSavesAfterUse");
+		}
+		return false;
+	}
+	
+	public static boolean isAtStationBlock(MinecartManiaMinecart minecart) {
+		if (ControlBlockList.isStationBlock(minecart.getItemBeneath())) {
+			if (!ControlBlockList.isReqRedstone(minecart.getItemBeneath()) || minecart.isPoweredBeneath()) {
+				if (!ControlBlockList.isRedstoneDisables(minecart.getItemBeneath()) || !minecart.isPoweredBeneath()) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
 	
 	public static boolean shouldPromptUser(MinecartManiaMinecart minecart) {
-		if (isNeverIntersectionPrompt()) {
+		if (isNeverIntersectionPrompt() && minecart.getDataValue("Prompt Override") == null) {
 			return false;
+		}
+		else {
+			minecart.setDataValue("Prompt Override", null);
 		}
 		if (!minecart.hasPlayerPassenger()) {
 			return false;
 		}
 		if (isStationIntersectionPrompt()) {
-			if (minecart.getBlockIdBeneath() != getStationBlockID()) {
+			if (!isAtStationBlock(minecart)) {
 				return false;
 			}
 		}

@@ -71,7 +71,7 @@ public class MinecartActionListener extends MinecartManiaListener{
 			return;
 		}
 	
-		if (minecart.getBlockIdBeneath() == StationUtil.getStationBlockID()) {
+		if (StationUtil.isAtStationBlock(minecart)) {
 			SignCommands.processStation(event);
 		}
 		

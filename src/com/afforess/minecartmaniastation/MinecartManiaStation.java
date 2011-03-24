@@ -35,7 +35,7 @@ public class MinecartManiaStation extends JavaPlugin{
 			this.setEnabled(false);
 		}
 		else {
-			MinecartManiaConfigurationParser.read(description.getName().replaceAll(" ","") + "Configuration.xml", MinecartManiaCore.dataDirectory, SettingList.config);
+			MinecartManiaConfigurationParser.read(description.getName().replaceAll(" ","") + "Configuration.xml", MinecartManiaCore.dataDirectory, new StationSettingParser());
 	        getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, listener, Priority.Normal, this);
 	        
 	        PluginDescriptionFile pdfFile = this.getDescription();
