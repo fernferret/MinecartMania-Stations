@@ -12,6 +12,7 @@ import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
+import com.afforess.minecartmaniacore.config.ControlBlockList;
 import com.afforess.minecartmaniacore.event.MinecartActionEvent;
 import com.afforess.minecartmaniacore.event.MinecartClickedEvent;
 import com.afforess.minecartmaniacore.event.MinecartIntersectionEvent;
@@ -71,7 +72,7 @@ public class MinecartActionListener extends MinecartManiaListener{
 			return;
 		}
 	
-		if (StationUtil.isAtStationBlock(minecart)) {
+		if (ControlBlockList.isValidStationBlock(minecart.getBlockBeneath())) {
 			SignCommands.processStation(event);
 		}
 		

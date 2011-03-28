@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
-import com.afforess.minecartmaniacore.Item;
 import com.afforess.minecartmaniacore.MinecartManiaMinecart;
-import com.afforess.minecartmaniacore.MinecartManiaStorageCart;
 import com.afforess.minecartmaniacore.MinecartManiaWorld;
 import com.afforess.minecartmaniacore.event.MinecartEvent;
 import com.afforess.minecartmaniacore.event.MinecartLaunchedEvent;
 import com.afforess.minecartmaniacore.utils.DirectionUtils;
 import com.afforess.minecartmaniacore.utils.DirectionUtils.CompassDirection;
-import com.afforess.minecartmaniacore.utils.ItemUtils;
 import com.afforess.minecartmaniacore.utils.MinecartUtils;
 import com.afforess.minecartmaniacore.utils.SignUtils;
 import com.afforess.minecartmaniacore.utils.StringUtils;
@@ -44,101 +41,11 @@ public class SignCommands {
 				boolean valid = false;
 				//end of data setup
 				
-				//defaultt condition
-				if (!valid) {
-					valid = str.toLowerCase().contains("default");
-				}
-				
-				//empty minecart condition
-				if (!valid) {
-					valid = minecart.isStandardMinecart() && minecart.minecart.getPassenger() == null && str.toLowerCase().contains("empty");
-				}
-				
-				//generic player condition
-				if (!valid) {
-					valid = minecart.hasPlayerPassenger() && str.toLowerCase().contains("player");
-				}
-				
-				//mob (monster and animal) condition
-				if (!valid) {
-					valid = minecart.minecart.getPassenger() != null && !minecart.hasPlayerPassenger() && str.toLowerCase().contains("mob");
-				}
-				
-				//Player station command processing
-				if (!valid) {
-					if (minecart.hasPlayerPassenger()) {
-						valid = processStationCommand(minecart, str);
+				for (StationCondition e : StationCondition.values()) {
+					if (e.result(minecart, val[0])) {
+						valid = true;
+						break;
 					}
-				}
-				
-				//Player name matches sign name condition
-				if (!valid) {
-					valid = minecart.hasPlayerPassenger() && val[0].equalsIgnoreCase(minecart.getPlayerPassenger().getName());
-				}
-				
-				//Player passenger contains item in hand condition
-				if (!valid) {
-					if (minecart.hasPlayerPassenger() && minecart.getPlayerPassenger().getItemInHand() != null) {
-						Item itemInHand = Item.getItem(minecart.getPlayerPassenger().getItemInHand().getTypeId(), minecart.getPlayerPassenger().getItemInHand().getDurability());
-						Item[] signData = ItemUtils.getItemStringToMaterial(val[0]);
-						
-						for (Item item : signData) {
-							if (item != null && item.equals(itemInHand)) {
-								valid = true;
-								break;
-							}
-						}		
-					}
-				}
-				
-				//Storage minecart contains item(s) condition
-				if (!valid) {
-					if (minecart.isStorageMinecart()) {
-						Item[] signData = ItemUtils.getItemStringToMaterial(val[0].trim());
-						for (Item item : signData) {
-							if (item != null && (((MinecartManiaStorageCart)minecart).contains(item))) {
-								valid = true;
-								break;
-							}
-						}	
-					}
-				}
-				
-				//empty storage minecart condition
-				if (!valid) {
-					valid = minecart.isStorageMinecart() && str.toLowerCase().contains("cargo") && ((MinecartManiaStorageCart)minecart).isEmpty();
-				}
-				
-				//Storage minecart condition
-				if (!valid) {
-					valid = minecart.isStorageMinecart() && str.toLowerCase().contains("storage");
-				}
-				
-				//Powered minecart condition
-				if (!valid) {
-					valid = minecart.isPoweredMinecart() && str.toLowerCase().contains("powered");
-				}
-				
-				//Redstone power condition
-				if (!valid) {
-					valid = str.toLowerCase().contains("redstone") && (minecart.isPoweredBeneath() ||
-							MinecartManiaWorld.isBlockIndirectlyPowered(minecart.minecart.getWorld(), minecart.getX(), minecart.getY() - 2, minecart.getZ()));
-				}
-
-				
-				//Note getDirectionOfMotion is unreliable on curves, use getPreviousFacingDir instead.
-				//Direction condition handling
-				if (!valid && (val[0].equals("W") || val[0].toLowerCase().contains("west"))) {
-					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.WEST;
-				}
-				else if (!valid && (val[0].equals("E") || val[0].toLowerCase().contains("east"))) {
-					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.EAST;
-				}
-				else if (!valid && (val[0].equals("N") || val[0].toLowerCase().contains("north"))) {
-					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.NORTH;
-				}
-				else if (!valid && (val[0].equals("S") || val[0].toLowerCase().contains("south"))) {
-					valid = minecart.getPreviousFacingDir() == DirectionUtils.CompassDirection.SOUTH;
 				}
 				
 				if (valid) {
@@ -230,7 +137,7 @@ public class SignCommands {
 		}
 	}
 
-	private static boolean processStationCommand(MinecartManiaMinecart minecart, String str) {
+	protected static boolean processStationCommand(MinecartManiaMinecart minecart, String str) {
 		boolean valid = false;
 		if (!str.toLowerCase().contains("st-")) {
 			return false;

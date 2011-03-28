@@ -34,17 +34,6 @@ public class StationUtil {
 		return false;
 	}
 	
-	public static boolean isAtStationBlock(MinecartManiaMinecart minecart) {
-		if (ControlBlockList.isStationBlock(minecart.getItemBeneath())) {
-			if (!ControlBlockList.isReqRedstone(minecart.getItemBeneath()) || minecart.isPoweredBeneath()) {
-				if (!ControlBlockList.isRedstoneDisables(minecart.getItemBeneath()) || !minecart.isPoweredBeneath()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
 	public static boolean shouldPromptUser(MinecartManiaMinecart minecart) {
 		if (isNeverIntersectionPrompt() && minecart.getDataValue("Prompt Override") == null) {
 			return false;
@@ -56,7 +45,7 @@ public class StationUtil {
 			return false;
 		}
 		if (isStationIntersectionPrompt()) {
-			if (!isAtStationBlock(minecart)) {
+			if (ControlBlockList.isValidStationBlock(minecart.getBlockBeneath())) {
 				return false;
 			}
 		}
