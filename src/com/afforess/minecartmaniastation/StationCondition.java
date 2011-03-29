@@ -34,6 +34,48 @@ public enum StationCondition implements Condition{
 			return minecart.minecart.getPassenger() != null && !minecart.hasPlayerPassenger() && str.toLowerCase().contains("mob");
 		}
 	},
+	Pig {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Pig && str.toLowerCase().contains("pig");
+		}
+	},
+	Chicken {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Chicken && str.toLowerCase().contains("chicken");
+		}
+	},
+	Cow {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Cow && str.toLowerCase().contains("cow");
+		}
+	},
+	Sheep {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Sheep && str.toLowerCase().contains("sheep");
+		}
+	},
+	Creeper {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Creeper && str.toLowerCase().contains("creeper");
+		}
+	},
+	Skeleton {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Skeleton && str.toLowerCase().contains("skeleton");
+		}
+	},
+	Zombie {
+		@Override
+		public boolean result(MinecartManiaMinecart minecart, String str) {
+			return minecart.minecart.getPassenger() instanceof org.bukkit.entity.Zombie && str.toLowerCase().contains("zombie");
+		}
+	},
 	StationCommand {
 		@Override
 		public boolean result(MinecartManiaMinecart minecart, String str) {

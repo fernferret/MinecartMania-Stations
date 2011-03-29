@@ -51,35 +51,10 @@ public class SignCommands {
 				if (valid) {
 					CompassDirection direction = CompassDirection.NO_DIRECTION;
 					
-					//Process STR first because of overlapping characters
-					if (val[1].equals("STR") || val[1].toLowerCase().contains("straight")) {
-						direction = minecart.getPreviousFacingDir();
-					}
-					else if (val[1].equals("W") || val[1].toLowerCase().contains("west")) {
-						direction = DirectionUtils.CompassDirection.WEST;
-					}
-					else if (val[1].equals("E") || val[1].toLowerCase().contains("east")) {
-						direction = DirectionUtils.CompassDirection.EAST;
-					}
-					else if (val[1].equals("S") || val[1].toLowerCase().contains("south")) {
-						direction = DirectionUtils.CompassDirection.SOUTH;
-					}
-					else if (val[1].equals("N") || val[1].toLowerCase().contains("north")) {
-						direction = DirectionUtils.CompassDirection.NORTH;
-					}
-					else if (val[1].equals("L") || val[1].toLowerCase().contains("left")) {
-						direction = DirectionUtils.getLeftDirection(minecart.getPreviousFacingDir());
-					}
-					else if (val[1].equals("R") || val[1].toLowerCase().contains("right")) {
-						direction = DirectionUtils.getRightDirection(minecart.getPreviousFacingDir());
-					}
-					else if (val[1].equals("D") || val[1].toLowerCase().contains("destroy")) {
-						direction = null;
-					}
-					else if (val[1].equals("P") || val[1].toLowerCase().contains("prompt")) {
-						if (minecart.hasPlayerPassenger()) {
-							minecart.setDataValue("Prompt Override", true);
-							return;//Break out and let it fall back into the standard intersection prompting
+					for (StationDirection e : StationDirection.values()) {
+						direction = e.direction(minecart, val[1]);
+						if (direction != CompassDirection.NO_DIRECTION){
+							break;
 						}
 					}
 					
